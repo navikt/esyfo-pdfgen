@@ -1,0 +1,13 @@
+services:
+  server:
+    platform: linux/amd64
+    build:
+      context: .
+      target: development
+    image: esyfo-pdfgen:development
+    ports:
+      - "9091:8080"
+    restart: always
+    volumes:
+      - ./templates:/app/templates:ro
+      - ./data:/app/data:ro

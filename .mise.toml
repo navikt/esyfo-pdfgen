@@ -1,0 +1,42 @@
+[tasks.dev]
+description = "Start esyfo-pdfgen lokalt"
+run = "docker compose up --build -d"
+
+[tasks.stop]
+description = "Stop lokal esyfo-pdfgen"
+run = "docker compose down"
+
+[tasks.build]
+description = "Bygg produksjonsimaget for esyfo-pdfgen"
+run = "docker build --target production -t esyfo-pdfgen ."
+
+[tasks.restart]
+description = "Restart serveren lokalt slik at maler og data lastes på nytt"
+run = "docker compose restart"
+
+[tasks.watch]
+description = "Restart serveren automatisk ved endringer i maler og eksempeldata (krever 'fswatch': brew install fswatch)"
+depends = ["dev"]
+run = """
+echo "Følger med på templates/ og data/ ... (Ctrl+C for å avslutte)"
+fswatch -o templates data | while read -r _; do
+  echo "Endring oppdaget, restarter esyfo-pdfgen..."
+  docker compose restart
+done
+"""
+
+[tasks.open-example]
+description = "Åpne eksempel-PDF-en i nettleseren"
+depends = ["dev"]
+run = """
+for i in $(seq 1 30); do
+  if curl --silent --fail http://localhost:9091/internal/is_ready >/dev/null; then
+    open http://localhost:9091/api/v1/genpdf/example/test
+    exit 0
+  fi
+  sleep 1
+done
+
+echo "esyfo-pdfgen ble ikke klar i tide" >&2
+exit 1
+"""
