@@ -1,0 +1,49 @@
+name: Deploy demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build demo
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Build and push demo image
+        id: docker-build-push
+        uses: nais/docker-build-push@v0
+        with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          image_suffix: demo
+          target: development
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
+  deploy:
+    name: Deploy to demo
+    needs: build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-demo-gcp
+      cancel-in-progress: true
+    permissions:
+      id-token: write
+    environment:
+      name: demo
+      url: https://esyfo-pdfgen-demo.intern.dev.nav.no
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Deploy to dev-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-demo.yml
+          VAR: image=${{ needs.build.outputs.image }}

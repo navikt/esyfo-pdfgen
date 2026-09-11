@@ -2,11 +2,14 @@ name: Build & Deploy
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
     types: [opened, synchronize, reopened]
   merge_group:
     types: [checks_requested]
-  workflow_dispatch:
 
 jobs:
   build:
@@ -15,9 +18,9 @@ jobs:
       ${{
         github.actor != 'dependabot[bot]' &&
         (
-          github.event_name == 'workflow_dispatch' ||
+          github.event_name == 'pull_request' ||
           github.event_name == 'merge_group' ||
-          (github.event_name == 'push' && github.ref_name == 'main')
+          github.event_name == 'push'
         )
       }}
     runs-on: ubuntu-latest
@@ -41,15 +44,7 @@ jobs:
 
   build-demo:
     name: Build demo
-    if: >-
-      ${{
-        github.actor != 'dependabot[bot]' &&
-        (
-          github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'push' && github.ref_name == 'main') ||
-          github.event_name == 'pull_request'
-        )
-      }}
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,8 +54,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Build and push demo image
-        uses: nais/docker-build-push@v0
         id: docker-build-push
+        uses: nais/docker-build-push@v0
         with:
           team: team-esyfo
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -74,8 +69,9 @@ jobs:
     name: Deploy to dev
     if: >-
       ${{
-        github.event_name == 'workflow_dispatch' ||
-        (github.event_name == 'push' && github.ref_name == 'main')
+        github.event_name == 'pull_request' ||
+        github.event_name == 'merge_group' ||
+        github.event_name == 'push'
       }}
     needs: build
     runs-on: ubuntu-latest
@@ -94,28 +90,6 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev.yml
           VAR: image=${{ needs.build.outputs.image }}
-
-  deploy-demo:
-    name: Deploy to demo
-    needs: build-demo
-    runs-on: ubuntu-latest
-    concurrency:
-      group: deploy-demo-gcp
-      cancel-in-progress: true
-    permissions:
-      id-token: write
-    environment:
-      name: demo
-      url: https://esyfo-pdfgen-demo.intern.dev.nav.no
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7.0.1
-      - name: Deploy to dev-gcp
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-demo.yml
-          VAR: image=${{ needs.build-demo.outputs.image }}
 
   deploy-prod:
     name: Deploy to prod
@@ -137,3 +111,26 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-prod.yml
           VAR: image=${{ needs.build.outputs.image }}
+
+  deploy-demo:
+    name: Deploy to demo
+    if: ${{ github.event_name == 'push' }}
+    needs: [build-demo, deploy-dev] # endre til [build-demo, deploy-prod] når prod blir tilgjengelig
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-demo-gcp
+      cancel-in-progress: true
+    permissions:
+      id-token: write
+    environment:
+      name: demo
+      url: https://esyfo-pdfgen-demo.intern.dev.nav.no
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Deploy to dev-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-demo.yml
+          VAR: image=${{ needs.build-demo.outputs.image }}
