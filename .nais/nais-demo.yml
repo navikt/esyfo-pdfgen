@@ -1,7 +1,7 @@
 apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
-  name: esyfo-pdfgen
+  name: esyfo-pdfgen-demo
   namespace: team-esyfo
   labels:
     team: team-esyfo
@@ -9,8 +9,8 @@ spec:
   image: {{ image }}
   port: 8080
   replicas:
-    min: 2
-    max: 3
+    min: 1
+    max: 1
   liveness:
     path: /internal/is_alive
     timeout: 1
@@ -35,3 +35,13 @@ spec:
       memory: 256Mi
     limits:
       memory: 2Gi
+  ingresses:
+    - https://esyfo-pdfgen-demo.intern.dev.nav.no
+  azure:
+    application:
+      enabled: true
+      tenant: nav.no
+      allowAllUsers: true
+    sidecar:
+      enabled: true
+      autoLogin: true

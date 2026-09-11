@@ -62,3 +62,12 @@ curl --fail \
 ```
 
 GET-forhåndsvisning med data fra `data/` er bare tilgjengelig i `DEV_MODE`.
+
+## Demo
+
+Demo-appen kjører development-imaget med versjonerte eksempeldata og er
+tilgjengelig for Entra-innloggede Nav-ansatte:
+
+```text
+https://esyfo-pdfgen-demo.intern.dev.nav.no/api/v1/genpdf/example/test
+```

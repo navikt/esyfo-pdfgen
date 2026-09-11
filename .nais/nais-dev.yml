@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: esyfo-pdfgen
   namespace: team-esyfo
+  labels:
+    team: team-esyfo
 spec:
   image: {{ image }}
   port: 8080

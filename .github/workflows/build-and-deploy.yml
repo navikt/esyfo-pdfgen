@@ -2,6 +2,8 @@ name: Build & Deploy
 
 on:
   push:
+  pull_request:
+    types: [opened, synchronize, reopened]
   merge_group:
     types: [checks_requested]
   workflow_dispatch:
@@ -9,7 +11,15 @@ on:
 jobs:
   build:
     name: Build
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: >-
+      ${{
+        github.actor != 'dependabot[bot]' &&
+        (
+          github.event_name == 'workflow_dispatch' ||
+          github.event_name == 'merge_group' ||
+          (github.event_name == 'push' && github.ref_name == 'main')
+        )
+      }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,9 +39,44 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
+  build-demo:
+    name: Build demo
+    if: >-
+      ${{
+        github.actor != 'dependabot[bot]' &&
+        (
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'push' && github.ref_name == 'main') ||
+          github.event_name == 'pull_request'
+        )
+      }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Build and push demo image
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          image_suffix: demo
+          target: development
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
   deploy-dev:
     name: Deploy to dev
-    if: github.event_name != 'merge_group'
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'push' && github.ref_name == 'main')
+      }}
     needs: build
     runs-on: ubuntu-latest
     concurrency:
@@ -48,6 +93,28 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev.yml
           VAR: image=${{ needs.build.outputs.image }}
+
+  deploy-demo:
+    name: Deploy to demo
+    needs: build-demo
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-demo-gcp
+      cancel-in-progress: true
+    permissions:
+      id-token: write
+    environment:
+      name: demo
+      url: https://esyfo-pdfgen-demo.intern.dev.nav.no
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Deploy to dev-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-demo.yml
+          VAR: image=${{ needs.build-demo.outputs.image }}
 
   deploy-prod:
     name: Deploy to prod
