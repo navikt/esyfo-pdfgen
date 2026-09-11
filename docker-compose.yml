@@ -11,3 +11,4 @@ services:
     volumes:
       - ./templates:/app/templates:ro
       - ./data:/app/data:ro
+      - ./lib:/app/lib:ro

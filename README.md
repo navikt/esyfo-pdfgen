@@ -1,5 +1,13 @@
 # esyfo-pdfgen
 
+[![Build Status](https://github.com/navikt/esyfo-pdfgen/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/navikt/esyfo-pdfgen/actions/workflows/build-and-deploy.yml)
+
+## Environments
+
+[🛠️ Development](https://esyfo-pdfgen.intern.dev.nav.no)
+
+[🔎 Demo](https://esyfo-pdfgen-demo.intern.dev.nav.no)
+
 PDF-tjeneste for eSyfo, bygget på
 [`pdfgenrs`](https://github.com/navikt/pdfgenrs) og Typst.
 
@@ -28,6 +36,7 @@ installert. Stopp tjenesten med `mise run stop`.
 | Katalog | Innhold |
 | --- | --- |
 | `templates/` | Typst-maler organisert som `<område>/<dokument>.typ` |
+| `lib/` | Gjenbrukbare Typst-komponenter for layout |
 | `data/` | Syntetiske eller anonymiserte eksempeldata for lokal utvikling |
 
 Produksjonsimaget inneholder ikke `data/`. Docker Compose bygger development-
