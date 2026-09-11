@@ -3,18 +3,24 @@ kind: Application
 metadata:
   name: esyfo-pdfgen
   namespace: team-esyfo
-  labels:
-    team: team-esyfo
 spec:
   image: {{ image }}
   port: 8080
   replicas:
     min: 2
-    max: 2
+    max: 3
   liveness:
     path: /internal/is_alive
+    timeout: 1
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 30
   readiness:
     path: /internal/is_ready
+    timeout: 1
+    initialDelay: 5
+    periodSeconds: 5
+    failureThreshold: 30
   prometheus:
     path: /internal/metrics
   observability:
