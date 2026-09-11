@@ -1,0 +1,86 @@
+name: Build & Deploy
+
+on:
+  push:
+  merge_group:
+    types: [checks_requested]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-dependabot:
+    name: Verify Dependabot image
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Build production image
+        run: docker build --target production .
+
+  build:
+    name: Build production image
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Build and push docker image
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          target: production
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
+  deploy-dev:
+    name: Deploy to dev-gcp
+    if: github.event_name != 'merge_group'
+    needs: build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-dev-gcp
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Deploy to dev-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-dev.yml
+          VAR: image=${{ needs.build.outputs.image }}
+
+  deploy-prod:
+    name: Deploy to prod-gcp
+    if: ${{ false }}
+    needs: [build, deploy-dev]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-prod-gcp
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Deploy to prod-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-prod.yml
+          VAR: image=${{ needs.build.outputs.image }}

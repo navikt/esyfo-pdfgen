@@ -33,6 +33,21 @@ installert. Stopp tjenesten med `mise run stop`.
 Produksjonsimaget inneholder ikke `data/`. Docker Compose bygger development-
 targetet, som inkluderer eksempeldata og aktiverer `DEV_MODE`.
 
+## Driftsgrenser
+
+Tjenesten bruker standardverdiene fra den versjonspinnede `pdfgenrs`-releasen.
+De overstyres ikke i dette repositoryet:
+
+| Innstilling | Standard |
+| --- | --- |
+| `MAX_CONCURRENT_COMPILATIONS` | 4 |
+| `SEMAPHORE_ACQUIRE_TIMEOUT_SECONDS` | 10 sekunder |
+| `COMPILE_TIMEOUT_SECONDS` | 30 sekunder |
+| `REQUEST_BODY_LIMIT_BYTES` | 2097152 byte (2 MiB) |
+
+Request-grensen må verifiseres mot forventet maksimal størrelse for hver
+dokumentflyt før flyten migreres til produksjon.
+
 ## API
 
 Produksjonskall bruker JSON:
