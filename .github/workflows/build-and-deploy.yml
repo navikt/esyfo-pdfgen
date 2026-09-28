@@ -85,7 +85,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Deploy to dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev.yml
@@ -106,7 +106,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Deploy to prod-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-prod.yml
@@ -129,7 +129,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Deploy to dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-demo.yml
