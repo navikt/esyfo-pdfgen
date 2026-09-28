@@ -23,8 +23,19 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: demo
           target: development
+      - name: Build and push demo web image
+        id: docker-build-push-web
+        uses: nais/docker-build-push@v0
+        with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          dockerfile: demo/Dockerfile
+          docker_context: .
+          image_suffix: demo-web
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
+      web_image: ${{ steps.docker-build-push-web.outputs.image }}
 
   deploy:
     name: Deploy to demo
@@ -41,9 +52,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
-      - name: Deploy to dev-gcp
+      - name: Deploy demo pdfgen to dev-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-demo.yml
           VAR: image=${{ needs.build.outputs.image }}
+      - name: Deploy demo web to dev-gcp
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-demo-web.yml
+          VAR: image=${{ needs.build.outputs.web_image }}

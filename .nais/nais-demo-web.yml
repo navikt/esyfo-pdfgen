@@ -1,7 +1,7 @@
-apiVersion: nais.io/v1alpha1
+ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
-  name: esyfo-pdfgen-demo
+  name: esyfo-pdfgen-demo-web
   namespace: team-esyfo
   labels:
     team: team-esyfo
@@ -23,19 +23,23 @@ spec:
     initialDelay: 5
     periodSeconds: 5
     failureThreshold: 30
-  prometheus:
-    path: /internal/metrics
-  observability:
-    autoInstrumentation:
-      enabled: true
-      runtime: sdk
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 32Mi
     limits:
-      memory: 2Gi
+      memory: 128Mi
+  ingresses:
+    - https://esyfo-pdfgen-demo.intern.dev.nav.no
+  azure:
+    application:
+      enabled: true
+      tenant: nav.no
+      allowAllUsers: true
+    sidecar:
+      enabled: true
+      autoLogin: true
   accessPolicy:
-    inbound:
+    outbound:
       rules:
-        - application: esyfo-pdfgen-demo-web
+        - application: esyfo-pdfgen-demo

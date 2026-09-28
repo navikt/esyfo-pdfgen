@@ -15,21 +15,24 @@ PDF-tjeneste for eSyfo, bygget på
 
 Du trenger Docker og [mise](https://mise.jdx.dev/).
 
-Start tjenesten og åpne eksempel-PDF-en:
+Start API og demoside lokalt:
 
 ```bash
-mise run open-example
+mise run dev
 ```
 
-Eksempelet er da tilgjengelig på:
+| Tjeneste | Adresse |
+| --- | --- |
+| Demoside | http://localhost:9090/ |
+| API | http://localhost:9091/api/v1/genpdf/example/test |
 
-```text
-http://localhost:9091/api/v1/genpdf/example/test
-```
+`mise run dev` kjører `docker compose up --build --watch` i forgrunnen.
+`pdfgenrs` laster maler og eksempeldata ved oppstart, så Compose Watch bygger
+og starter tjenestene på nytt ved endringer i `templates/`, `lib/`, `data/` og
+`demo/`. Nye filer i `data/` dukker da også opp i listen på demosiden. Avslutt
+med Ctrl+C, eller `mise run stop` fra en annen terminal.
 
-`pdfgenrs` laster maler og eksempeldata ved oppstart. Bruk
-`mise run restart` etter endringer, eller `mise run watch` dersom `fswatch` er
-installert. Stopp tjenesten med `mise run stop`.
+`mise run build` bygger de lokale imagene uten å starte dem.
 
 ## Struktur
 
@@ -38,6 +41,7 @@ installert. Stopp tjenesten med `mise run stop`.
 | `templates/` | Typst-maler organisert som `<område>/<dokument>.typ` |
 | `lib/` | Gjenbrukbare Typst-komponenter for layout |
 | `data/` | Syntetiske eller anonymiserte eksempeldata for lokal utvikling |
+| `demo/` | Demoside, generering av eksempelvalg og nginx-konfigurasjon |
 
 Produksjonsimaget inneholder ikke `data/`. Docker Compose bygger development-
 targetet, som inkluderer eksempeldata og aktiverer `DEV_MODE`.
@@ -74,9 +78,15 @@ GET-forhåndsvisning med data fra `data/` er bare tilgjengelig i `DEV_MODE`.
 
 ## Demo
 
-Demo-appen kjører development-imaget med versjonerte eksempeldata og er
-tilgjengelig for Entra-innloggede Nav-ansatte:
+Forsiden for demo er tilgjengelig for Entra-innloggede Nav-ansatte:
 
 ```text
-https://esyfo-pdfgen-demo.intern.dev.nav.no/api/v1/genpdf/example/test
+https://esyfo-pdfgen-demo.intern.dev.nav.no/
 ```
+
+Eksisterende API-URL-er på demoverten, for eksempel
+`https://esyfo-pdfgen-demo.intern.dev.nav.no/api/v1/genpdf/example/test`,
+fungerer fortsatt via proxyen. `pdfgenrs`-demoen kjører med versjonerte
+eksempeldata, men har ikke lenger egen ingress og aksepterer bare trafikk fra
+`esyfo-pdfgen-demo-web`. Forsiden finnes kun i demo og lokalt, ikke i dev
+eller prod.

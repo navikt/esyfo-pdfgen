@@ -12,3 +12,30 @@ services:
       - ./templates:/app/templates:ro
       - ./data:/app/data:ro
       - ./lib:/app/lib:ro
+    develop:
+      watch:
+        - action: rebuild
+          path: ./templates
+        - action: rebuild
+          path: ./lib
+        - action: rebuild
+          path: ./data
+  web:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: demo/Dockerfile
+    image: esyfo-pdfgen:demo-web
+    ports:
+      - "9090:8080"
+    restart: always
+    depends_on:
+      - server
+    volumes:
+      - ./demo/upstream.local.conf:/etc/nginx/pdfgen-upstream.conf:ro
+    develop:
+      watch:
+        - action: rebuild
+          path: ./data
+        - action: rebuild
+          path: ./demo

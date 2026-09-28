@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>esyfo-pdfgen demo</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>esyfo-pdfgen demo</h1>
+    <p>Viser PDF-er med syntetiske eller anonymiserte eksempeldata.</p>
+    <label for="example">Velg eksempel-PDF</label>
+    <select id="example">
+<!-- OPTIONS -->
+    </select>
+    <a id="open-pdf" href="__FIRST_URL__" target="_blank" rel="noopener">Åpne i ny fane</a>
+    <iframe id="preview" title="Forhåndsvisning av valgt PDF" src="__FIRST_URL__"></iframe>
+  </main>
+</body>
+</html>
