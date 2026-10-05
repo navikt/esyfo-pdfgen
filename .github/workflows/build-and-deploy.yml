@@ -37,7 +37,7 @@ jobs:
         run: docker build --target production .
       - name: Build and push docker image
         if: ${{ github.event_name != 'merge_group' }}
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
         id: docker-build-push
         with:
           team: team-esyfo
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v7.0.1
       - name: Build and push demo image
         id: docker-build-push
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
         with:
           team: team-esyfo
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -69,7 +69,7 @@ jobs:
           target: development
       - name: Build and push demo web image
         id: docker-build-push-web
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
         with:
           team: team-esyfo
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -101,7 +101,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Set up Nais CLI
-        uses: nais/setup@v1
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
         with:
           team: team-esyfo
       - name: Deploy to dev-gcp
@@ -125,7 +125,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Set up Nais CLI
-        uses: nais/setup@v1
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
         with:
           team: team-esyfo
       - name: Deploy to prod-gcp
@@ -151,7 +151,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Set up Nais CLI
-        uses: nais/setup@v1
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
         with:
           team: team-esyfo
       - name: Deploy demo pdfgen to dev-gcp
