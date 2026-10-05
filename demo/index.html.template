@@ -16,7 +16,7 @@
 <!-- OPTIONS -->
     </select>
     <a id="open-pdf" href="__FIRST_URL__" target="_blank" rel="noopener">Åpne i ny fane</a>
-    <iframe id="preview" title="Forhåndsvisning av valgt PDF"></iframe>
+    <iframe id="preview" title="Forhåndsvisning av valgt PDF" src="__FIRST_URL__"></iframe>
   </main>
 </body>
 </html>
