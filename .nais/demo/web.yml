@@ -29,7 +29,7 @@ spec:
     limits:
       memory: 128Mi
   ingresses:
-    - https://esyfo-pdfgen-demo.intern.dev.nav.no
+    - https://esyfo-pdfgen-demo.ekstern.dev.nav.no
   azure:
     application:
       enabled: true
