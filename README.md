@@ -6,7 +6,7 @@
 
 [🛠️ Development](https://esyfo-pdfgen.intern.dev.nav.no)
 
-[🔎 Demo](https://esyfo-pdfgen-demo.intern.dev.nav.no)
+[🔎 Demo](https://esyfo-pdfgen-demo.ekstern.dev.nav.no)
 
 PDF-tjeneste for eSyfo, bygget på
 [`pdfgenrs`](https://github.com/navikt/pdfgenrs) og Typst.
@@ -78,15 +78,16 @@ GET-forhåndsvisning med data fra `data/` er bare tilgjengelig i `DEV_MODE`.
 
 ## Demo
 
-Forsiden for demo er tilgjengelig for Entra-innloggede Nav-ansatte:
+Forsiden for demo er tilgjengelig for Entra-innloggede Nav-ansatte, også uten
+naisdevice:
 
 ```text
-https://esyfo-pdfgen-demo.intern.dev.nav.no/
+https://esyfo-pdfgen-demo.ekstern.dev.nav.no/
 ```
 
-Eksisterende API-URL-er på demoverten, for eksempel
-`https://esyfo-pdfgen-demo.intern.dev.nav.no/api/v1/genpdf/example/test`,
-fungerer fortsatt via proxyen. `pdfgenrs`-demoen kjører med versjonerte
+API-URL-er på demoverten, for eksempel
+`https://esyfo-pdfgen-demo.ekstern.dev.nav.no/api/v1/genpdf/example/test`,
+går via proxyen og krever samme innlogging. `pdfgenrs`-demoen kjører med versjonerte
 eksempeldata, men har ikke lenger egen ingress og aksepterer bare trafikk fra
 `esyfo-pdfgen-demo-web`. Forsiden finnes kun i demo og lokalt, ikke i dev
 eller prod.

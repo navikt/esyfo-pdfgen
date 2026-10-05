@@ -49,7 +49,7 @@ jobs:
       id-token: write
     environment:
       name: demo
-      url: https://esyfo-pdfgen-demo.intern.dev.nav.no
+      url: https://esyfo-pdfgen-demo.ekstern.dev.nav.no
     steps:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
