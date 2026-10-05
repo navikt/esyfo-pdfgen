@@ -31,7 +31,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
+      # Merge queue refs make the OIDC sub claim exceed GCP's 127-byte limit, so only verify the build there.
+      - name: Build docker image (merge queue)
+        if: ${{ github.event_name == 'merge_group' }}
+        run: docker build --target production .
       - name: Build and push docker image
+        if: ${{ github.event_name != 'merge_group' }}
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -70,7 +75,6 @@ jobs:
     if: >-
       ${{
         github.event_name == 'pull_request' ||
-        github.event_name == 'merge_group' ||
         github.event_name == 'push'
       }}
     needs: build
