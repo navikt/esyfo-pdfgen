@@ -1,0 +1,15 @@
+spec:
+  ingresses:
+    - https://esyfo-pdfgen.intern.dev.nav.no
+#  accessPolicy:
+#    inbound:
+#      rules:
+#        - application: syfo-oppfolgingsplan-backend
+#        - application: meroppfolging-backend
+#        - application: ismeroppfolging
+#          namespace: teamsykefravr
+#        - application: syfooppfolgingsplanservice
+#          namespace: team-esyfo
+#          cluster: dev-fss
+#        - application: lps-oppfolgingsplan-mottak
+#          namespace: team-esyfo

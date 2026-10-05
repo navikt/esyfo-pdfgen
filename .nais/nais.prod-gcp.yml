@@ -1,0 +1,4 @@
+spec:
+  replicas:
+    min: 2
+    max: 3

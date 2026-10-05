@@ -16,15 +16,26 @@ jobs:
         uses: actions/checkout@v7.0.1
       - name: Build and push demo image
         id: docker-build-push
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
         with:
           team: team-esyfo
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: demo
           target: development
+      - name: Build and push demo web image
+        id: docker-build-push-web
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
+        with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          dockerfile: demo/Dockerfile
+          docker_context: .
+          image_suffix: demo-web
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
+      web_image: ${{ steps.docker-build-push-web.outputs.image }}
 
   deploy:
     name: Deploy to demo
@@ -34,6 +45,7 @@ jobs:
       group: deploy-demo-gcp
       cancel-in-progress: true
     permissions:
+      contents: read
       id-token: write
     environment:
       name: demo
@@ -41,9 +53,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
-      - name: Deploy to dev-gcp
-        uses: nais/deploy/actions/deploy@v2
+      - name: Set up Nais CLI
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
+        with:
+          team: team-esyfo
+      - name: Deploy demo pdfgen to dev-gcp
         env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-demo.yml
-          VAR: image=${{ needs.build.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
+        run: nais apply .nais/nais.yml --environment dev-gcp --mixin .nais/demo/pdfgen.yml --set spec.image="$IMAGE" --wait
+      - name: Deploy demo web to dev-gcp
+        env:
+          IMAGE: ${{ needs.build.outputs.web_image }}
+        run: nais apply .nais/demo/web.yml --environment dev-gcp --set spec.image="$IMAGE" --wait
