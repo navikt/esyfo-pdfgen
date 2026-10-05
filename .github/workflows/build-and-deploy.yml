@@ -12,6 +12,17 @@ on:
     types: [checks_requested]
 
 jobs:
+  test-templates:
+    name: Test PDF templates
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Compile all templates
+        run: scripts/test-templates.sh
+
   build:
     name: Build
     if: >-
@@ -50,6 +61,7 @@ jobs:
   build-demo:
     name: Build demo
     if: ${{ github.event_name == 'push' }}
+    needs: test-templates
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -88,7 +100,7 @@ jobs:
         github.event_name == 'pull_request' ||
         github.event_name == 'push'
       }}
-    needs: build
+    needs: [build, test-templates]
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-dev-gcp
@@ -112,7 +124,7 @@ jobs:
   deploy-prod:
     name: Deploy to prod
     if: ${{ false }}
-    needs: [build, deploy-dev]
+    needs: [build, test-templates, deploy-dev]
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-prod-gcp
