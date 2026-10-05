@@ -1,0 +1,7 @@
+metadata:
+  name: esyfo-pdfgen-demo
+spec:
+  accessPolicy:
+    inbound:
+      rules:
+        - application: esyfo-pdfgen-demo-web
