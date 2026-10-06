@@ -34,6 +34,9 @@ med Ctrl+C, eller `mise run stop` fra en annen terminal.
 
 `mise run build` bygger de lokale imagene uten å starte dem.
 
+`mise run test` kompilerer alle eksempeldata mot malene, på samme måte som CI.
+Testen bruker port 8080; sett `PORT` hvis den er opptatt.
+
 ## Struktur
 
 | Katalog | Innhold |
@@ -45,6 +48,11 @@ med Ctrl+C, eller `mise run stop` fra en annen terminal.
 
 Produksjonsimaget inneholder ikke `data/`. Docker Compose bygger development-
 targetet, som inkluderer eksempeldata og aktiverer `DEV_MODE`.
+
+CI kompilerer hver `data/<område>/<dokument>.json` mot
+`templates/<område>/<dokument>.typ` og stopper deploy hvis en mal ikke gir en
+gyldig PDF. Testen sjekker bare at malen kompilerer. Innhold og layout må
+godkjennes manuelt.
 
 ## Driftsgrenser
 

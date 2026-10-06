@@ -13,3 +13,7 @@ echo "API:      http://localhost:9091/api/v1/genpdf/<område>/<dokument>"
 [tasks.stop]
 description = "Stop lokal esyfo-pdfgen"
 run = "docker compose down"
+
+[tasks.test]
+description = "Kompiler alle eksempeldata mot malene og sjekk at de gir gyldig PDF"
+run = "scripts/test-templates.sh"
