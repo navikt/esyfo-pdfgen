@@ -58,6 +58,58 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
+  deploy-dev:
+    name: Deploy to dev
+    if: >-
+      ${{
+        github.event_name == 'pull_request' ||
+        github.event_name == 'push'
+      }}
+    needs: [build, test-templates]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-dev-gcp
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Set up Nais CLI
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
+        with:
+          team: team-esyfo
+      - name: Deploy to dev-gcp
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+        run: nais apply .nais/nais.yml --environment dev-gcp --set spec.image="$IMAGE" --wait
+
+  deploy-prod:
+    name: Deploy to prod
+    if: ${{ github.event_name == 'push' }}
+    needs: [build, test-templates]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-prod-gcp
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+      - name: Set up Nais CLI
+        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
+        with:
+          team: team-esyfo
+      - name: Deploy to prod-gcp
+        env:
+          IMAGE: ${{ needs.build.outputs.image }}
+        run: nais apply .nais/nais.yml --environment prod-gcp --set spec.image="$IMAGE" --wait
+
   build-demo:
     name: Build demo
     if: ${{ github.event_name == 'push' }}
@@ -93,62 +145,10 @@ jobs:
       image: ${{ steps.docker-build-push.outputs.image }}
       web_image: ${{ steps.docker-build-push-web.outputs.image }}
 
-  deploy-dev:
-    name: Deploy to dev
-    if: >-
-      ${{
-        github.event_name == 'pull_request' ||
-        github.event_name == 'push'
-      }}
-    needs: [build, test-templates]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: deploy-dev-gcp
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      id-token: write
-    environment: dev
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7.0.1
-      - name: Set up Nais CLI
-        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
-        with:
-          team: team-esyfo
-      - name: Deploy to dev-gcp
-        env:
-          IMAGE: ${{ needs.build.outputs.image }}
-        run: nais apply .nais/nais.yml --environment dev-gcp --set spec.image="$IMAGE" --wait
-
-  deploy-prod:
-    name: Deploy to prod
-    if: ${{ github.event_name == 'push' }}
-    needs: [build, test-templates, deploy-dev]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: deploy-prod-gcp
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      id-token: write
-    environment: prod
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7.0.1
-      - name: Set up Nais CLI
-        uses: nais/setup@ea33c90b68228e6f04fb34b88bfd8ab6ad523ce8 # v1.0.2
-        with:
-          team: team-esyfo
-      - name: Deploy to prod-gcp
-        env:
-          IMAGE: ${{ needs.build.outputs.image }}
-        run: nais apply .nais/nais.yml --environment prod-gcp --set spec.image="$IMAGE" --wait
-
   deploy-demo:
     name: Deploy to demo
     if: ${{ github.event_name == 'push' }}
-    needs: [build-demo, deploy-prod]
+    needs: [build-demo]
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-demo-gcp
