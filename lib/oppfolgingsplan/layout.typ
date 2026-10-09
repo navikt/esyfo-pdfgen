@@ -36,7 +36,7 @@
     fill: text-color,
     fallback: false,
   )
-  set par(leading: 4pt)
+  set par(leading: 6pt)
 
   body
 }
@@ -46,10 +46,10 @@
   fill: title-background,
   inset: (x: 10pt, y: 10pt),
   breakable: false,
-  text(size: 18pt, weight: "medium", body),
+  text(size: 18pt, weight: "bold", body),
 )
 
-#let detail-row(label, value) = block(above: 7.5pt)[
+#let detail-row(label, value) = block(above: 14pt)[
   #strong(label): #multiline(value)
 ]
 
@@ -58,7 +58,7 @@
   below: 7.5pt,
   breakable: false,
 )[
-  #text(size: 15pt, weight: "medium")[#title]
+  #text(size: 15pt, weight: "bold")[#title]
   #if is-present(description) {
     v(7.5pt)
     description
