@@ -1,4 +1,10 @@
 spec:
+  ingresses:
+    - https://esyfo-pdfgen.intern.nav.no
+  accessPolicy:
+    inbound:
+      rules:
+        - application: syfo-oppfolgingsplan-backend
   replicas:
     min: 2
     max: 3
