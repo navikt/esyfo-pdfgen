@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "oppfolgingsplan": {
+    "createdDate": "2023-10-01",
+    "evaluationDate": "2023-10-15",
+    "sykmeldtName": "Ansatt 😀 Hansen",
+    "sykmeldtFnr": "12345678901",
+    "organisasjonsnavn": "Eksempel  AS",
+    "organisasjonsnummer": "987654321",
+    "stillingstittel": "Brødkontroller ❤️",
+    "stillingsprosent": "50",
+    "narmesteLederName": "Leder Larsen",
+    "sections": [
+      {
+        "id": "spesialtegn",
+        "title": "Spesialtegn 👍🏽",
+        "description": "Beskrivelse 👨‍👩‍👧",
+        "inputFields": [
+          {
+            "id": "ustottet",
+            "title": "Tegn som ikke finnes i fonten",
+            "description": null,
+            "value": "Private Use Area:  \nKinesisk: 你好\nNull-bredde: a​b­c\nPil: →"
+          },
+          {
+            "id": "emoji",
+            "title": "Emoji som skal vises",
+            "description": null,
+            "value": "😀 👍🏽 🇳🇴 1️⃣ ❤️ 👨‍👩‍👧 🏴󠁧󠁢󠁳󠁣󠁴󠁿 ☺"
+          },
+          {
+            "id": "stottet",
+            "title": "Tegn som skal vises uendret",
+            "description": "Norsk, samisk, gresk, ukrainsk og typografi",
+            "value": "Æ Ø Å æ ø å é ü ß\r\nČ č Đ đ Ŋ ŋ Š š Ŧ ŧ Ž ž Á á\rΑλφα Ωμέγα\tПривіт Єє Її Ґґ\n– — ‘ ’ ‚ “ ” „ † ‡ • … ‰ ‹ › € ™ « » § ° ½"
+          }
+        ]
+      }
+    ]
+  }
+}

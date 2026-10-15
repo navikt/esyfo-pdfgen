@@ -30,7 +30,7 @@
     ],
   )
   set text(
-    font: "Source Sans 3",
+    font: ("Source Sans 3", "Noto Color Emoji"),
     lang: "nb",
     size: 9pt,
     fill: text-color,

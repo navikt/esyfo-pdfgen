@@ -44,6 +44,7 @@ Testen bruker port 8080; sett `PORT` hvis den er opptatt.
 | `templates/` | Typst-maler organisert som `<område>/<dokument>.typ` |
 | `lib/` | Gjenbrukbare Typst-komponenter for layout |
 | `data/` | Syntetiske eller anonymiserte eksempeldata for lokal utvikling |
+| `test-data/` | Syntetiske regresjonsdata organisert som `<område>/<dokument>/<tilfelle>.json` |
 | `demo/` | Demoside, generering av eksempelvalg og nginx-konfigurasjon |
 
 Produksjonsimaget inneholder ikke `data/`. Docker Compose bygger development-
@@ -51,8 +52,14 @@ targetet, som inkluderer eksempeldata og aktiverer `DEV_MODE`.
 
 CI kompilerer hver `data/<område>/<dokument>.json` mot
 `templates/<område>/<dokument>.typ` og stopper deploy hvis en mal ikke gir en
-gyldig PDF. Testen sjekker bare at malen kompilerer. Innhold og layout må
-godkjennes manuelt.
+gyldig PDF. Det samme gjelder hver `test-data/<område>/<dokument>/<tilfelle>.json`.
+Testen sjekker bare at malen kompilerer. Innhold og layout må godkjennes
+manuelt.
+
+PDF/A- og PDF/UA-eksport feiler hvis et tegn mangler i fonten. Maler må derfor
+sende innsendte data gjennom `sanitize` fra `lib/common/sanitize.typ`. Emoji vises
+med Noto Color Emoji som reservefont. Andre tegn utenfor det Source Sans 3
+dekker, som Private Use Area, erstattes med `?`.
 
 ## Driftsgrenser
 

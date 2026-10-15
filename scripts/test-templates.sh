@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Compile-only test: every data/<group>/<name>.json must produce a PDF from
+# Compile-only test: every data/<group>/<name>.json and
+# test-data/<group>/<name>/<case>.json must produce a PDF from
 # templates/<group>/<name>.typ via pdfgenrs.
 set -euo pipefail
 
@@ -39,9 +40,20 @@ fi
 failed=0
 total=0
 while IFS= read -r data_file; do
-  relative="${data_file#data/}"
-  group="$(dirname "$relative")"
-  name="$(basename "$relative" .json)"
+  case "$data_file" in
+    test-data/*)
+      relative="${data_file#test-data/}"
+      group="${relative%%/*}"
+      name="$(basename "$(dirname "$relative")")"
+      label="$group/$name ($(basename "$relative"))"
+      ;;
+    *)
+      relative="${data_file#data/}"
+      group="$(dirname "$relative")"
+      name="$(basename "$relative" .json)"
+      label="$group/$name"
+      ;;
+  esac
   total=$((total + 1))
 
   http_status=$(curl -s -w "%{http_code}" \
@@ -53,14 +65,14 @@ while IFS= read -r data_file; do
   file_type=$(file --mime-type -b "$RESPONSE")
 
   if [ "$http_status" = "200" ] && [ "$file_type" = "application/pdf" ]; then
-    echo "OK: $group/$name"
+    echo "OK: $label"
   else
-    echo "::error title=PDF compile failed::$group/$name: HTTP $http_status, $file_type"
+    echo "::error title=PDF compile failed::$label: HTTP $http_status, $file_type"
     head -c 2000 "$RESPONSE"
     echo ""
     failed=$((failed + 1))
   fi
-done < <(find data -name '*.json' -type f | sort)
+done < <(find data test-data -name '*.json' -type f | sort)
 
 echo "=== Results: $((total - failed))/$total templates compiled ==="
 if [ "$total" -eq 0 ]; then
