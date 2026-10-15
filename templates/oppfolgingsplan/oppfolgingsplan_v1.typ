@@ -1,5 +1,16 @@
 #import "/lib/common/sanitize.typ": sanitize
-#import "/lib/oppfolgingsplan/layout.typ": answer-field, detail-row, document-layout, is-present, section-header, title-banner
+#import "/lib/oppfolgingsplan/layout.typ": answer, detail-row, document-layout, is-present, keep-together, question, section-title, separator, title, title-background
+
+#let title = title.with(background: title-background, inset: 10pt)
+#let detail-row = detail-row.with(above: 14pt)
+#let section-title = section-title.with(description-gap: 25.5pt, above: 37.5pt, below: 7.5pt)
+#let answer-field(body, description: none, value) = block(above: 7.5pt)[
+  #keep-together[
+    #separator()
+    #question(body, description: description, description-gap: 20pt, above: 20pt)
+  ]
+  #answer(value, above: 18pt)
+]
 
 #let data = sanitize(json("/data/oppfolgingsplan/oppfolgingsplan_v1.json"))
 #let plan = data.at("oppfolgingsplan", default: (:))
@@ -11,9 +22,10 @@
 #show: document-layout.with(
   title: "Oppfølgingsplan",
   footer-title: document-title,
+  text-size: 9pt,
 )
 
-#title-banner[#document-title]
+#title(document-title)
 
 #detail-row("Opprettet", plan.at("createdDate", default: ""))
 #detail-row("Dato for evaluering", plan.at("evaluationDate", default: ""))
@@ -36,7 +48,7 @@
 #detail-row("Nærmeste leder", plan.at("narmesteLederName", default: ""))
 
 #for section in plan.at("sections", default: ()) {
-  section-header(
+  section-title(
     section.at("title", default: ""),
     description: section.at("description", default: none),
   )
