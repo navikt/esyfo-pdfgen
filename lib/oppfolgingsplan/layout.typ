@@ -25,6 +25,7 @@
   title: "",
   footer-title: none,
   text-size: 12pt,
+  text-fill: text-color,
   leading: 6pt,
   paragraph-spacing: 1.2em,
   margin: 48pt,
@@ -50,7 +51,7 @@
     font: ("Source Sans 3", "Noto Color Emoji"),
     lang: "nb",
     size: text-size,
-    fill: text-color,
+    fill: text-fill,
     fallback: false,
   )
   set par(leading: leading, spacing: paragraph-spacing)
@@ -125,3 +126,20 @@
   width: 100%,
   body,
 )
+
+#let paragraph(body, above: 0pt, below: 0pt) = block(above: above, below: below, body)
+
+// Bordered box, e.g. a notice or a highlighted call to action.
+#let framed(body, stroke: 1pt, radius: 0pt, inset: 0pt, breakable: true, above: 0pt, below: 0pt) = block(
+  width: 100%,
+  breakable: breakable,
+  stroke: stroke,
+  radius: radius,
+  inset: inset,
+  above: above,
+  below: below,
+  body,
+)
+
+// Image without meaning, hidden from assistive technology.
+#let decorative-image(path, height: 1em) = box(pdf.artifact(image(path, height: height)))

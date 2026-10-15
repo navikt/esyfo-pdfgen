@@ -43,6 +43,7 @@ Testen bruker port 8080; sett `PORT` hvis den er opptatt.
 | --- | --- |
 | `templates/` | Typst-maler organisert som `<område>/<dokument>.typ` |
 | `lib/` | Gjenbrukbare Typst-komponenter for layout |
+| `resources/` | Bilder og andre filer som malene bruker |
 | `data/` | Syntetiske eller anonymiserte eksempeldata for lokal utvikling |
 | `test-data/` | Syntetiske regresjonsdata organisert som `<område>/<dokument>/<tilfelle>.json` |
 | `demo/` | Demoside, generering av eksempelvalg og nginx-konfigurasjon |

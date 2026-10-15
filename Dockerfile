@@ -2,6 +2,7 @@ FROM ghcr.io/navikt/pdfgenrs:1.0.46@sha256:6fea30433b727d927dd2618d382399582e9d9
 
 COPY templates /app/templates
 COPY lib /app/lib
+COPY resources /app/resources
 
 FROM production AS development
 
