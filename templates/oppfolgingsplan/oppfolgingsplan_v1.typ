@@ -1,6 +1,7 @@
+#import "/lib/common/sanitize.typ": sanitize
 #import "/lib/oppfolgingsplan/layout.typ": answer-field, detail-row, document-layout, is-present, section-header, title-banner
 
-#let data = json("/data/oppfolgingsplan/oppfolgingsplan_v1.json")
+#let data = sanitize(json("/data/oppfolgingsplan/oppfolgingsplan_v1.json"))
 #let plan = data.at("oppfolgingsplan", default: (:))
 
 #let employee-name = plan.at("sykmeldtName", default: "")
