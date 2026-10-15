@@ -3,24 +3,30 @@
   "oppfolgingsplan": {
     "createdDate": "2023-10-01",
     "evaluationDate": "2023-10-15",
-    "sykmeldtName": "Ansatt \ud83d\ude00 Hansen",
+    "sykmeldtName": "Ansatt 😀 Hansen",
     "sykmeldtFnr": "12345678901",
-    "organisasjonsnavn": "Eksempel \uf02d AS",
+    "organisasjonsnavn": "Eksempel  AS",
     "organisasjonsnummer": "987654321",
-    "stillingstittel": "Brødkontroller \u2764\ufe0f",
+    "stillingstittel": "Brødkontroller ❤️",
     "stillingsprosent": "50",
     "narmesteLederName": "Leder Larsen",
     "sections": [
       {
         "id": "spesialtegn",
-        "title": "Spesialtegn \ud83d\udc4d\ud83c\udffd",
-        "description": "Beskrivelse \ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67",
+        "title": "Spesialtegn 👍🏽",
+        "description": "Beskrivelse 👨‍👩‍👧",
         "inputFields": [
           {
             "id": "ustottet",
             "title": "Tegn som ikke finnes i fonten",
             "description": null,
-            "value": "Private Use Area: \uf02d \ue000\nEmoji: \ud83d\ude00 \ud83d\udc4d\ud83c\udffd \ud83c\uddf3\ud83c\uddf4 1\ufe0f\u20e3\nKinesisk: \u4f60\u597d\nNull-bredde: a\u200bb\u200dc\u00adx\nPil: \u2192"
+            "value": "Private Use Area:  \nKinesisk: 你好\nNull-bredde: a​b­c\nPil: →"
+          },
+          {
+            "id": "emoji",
+            "title": "Emoji som skal vises",
+            "description": null,
+            "value": "😀 👍🏽 🇳🇴 1️⃣ ❤️ 👨‍👩‍👧 🏴󠁧󠁢󠁳󠁣󠁴󠁿 ☺"
           },
           {
             "id": "stottet",

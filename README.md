@@ -57,9 +57,9 @@ Testen sjekker bare at malen kompilerer. Innhold og layout må godkjennes
 manuelt.
 
 PDF/A- og PDF/UA-eksport feiler hvis et tegn mangler i fonten. Maler må derfor
-sende innsendte data gjennom `sanitize` fra `lib/common/sanitize.typ`. Tegn
-utenfor det Source Sans 3 dekker, som emoji og Private Use Area, erstattes med
-`?`.
+sende innsendte data gjennom `sanitize` fra `lib/common/sanitize.typ`. Emoji vises
+med Noto Color Emoji som reservefont. Andre tegn utenfor det Source Sans 3
+dekker, som Private Use Area, erstattes med `?`.
 
 ## Driftsgrenser
 
