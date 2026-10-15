@@ -12,12 +12,15 @@ services:
       - ./templates:/app/templates:ro
       - ./data:/app/data:ro
       - ./lib:/app/lib:ro
+      - ./resources:/app/resources:ro
     develop:
       watch:
         - action: rebuild
           path: ./templates
         - action: rebuild
           path: ./lib
+        - action: rebuild
+          path: ./resources
         - action: rebuild
           path: ./data
   web:
