@@ -1,33 +1,18 @@
-#import "/lib/oppfolgingsplan/layout.typ": decorative-image, document-layout, framed, is-truthy, paragraph, section-title, separator, title
+#import "/lib/oppfolgingsplan/layout.typ": decorative-image, is-truthy
+#import "/lib/oppfolging/mer-veiledning.typ": framed, letter-color, letter-layout, paragraph, section-title, sent-date, separator, title
 
 #let data = json("/data/oppfolging/mer_veiledning_for_digitale.json")
 #let letter = data.at("brevdata", default: (:))
 #let get(key) = letter.at(key, default: none)
 
-#let letter-color = rgb("#262626")
-#let framed = framed.with(stroke: 2.25pt + letter-color, breakable: false)
-#let title = title.with(size: 24pt, below: 29pt)
-#let section-title = section-title.with(size: 18pt, above: 27pt, below: 27pt)
-#let paragraph = paragraph.with(above: 25.5pt, below: 25.5pt)
-#let separator = separator.with(above: 19pt, below: 19pt)
 #let indented(body) = block(inset: (left: 22.5pt), above: 25.5pt, below: 25.5pt, body)
 #let chevron-title(body) = section-title[#decorative-image("/resources/ChevronUp.png", height: 18pt) #body]
 #let choice(body) = box(stroke: 2.25pt + letter-color, inset: (x: 9pt, y: 4pt), outset: (y: 6pt), body)
 
-#set list(indent: 18pt, body-indent: 8pt)
-#show list: set block(above: 25.5pt, below: 25.5pt)
-
-#show: document-layout.with(
-  title: "Snart slutt på sykepenger",
-  text-size: 13.5pt,
-  text-fill: letter-color,
-  leading: 12pt,
-  paragraph-spacing: 0pt,
-  margin: 40pt,
-)
+#show: letter-layout.with(title: "Snart slutt på sykepenger")
 
 #if is-truthy(get("sendtdato")) {
-  paragraph(below: 40pt)[Sendt #get("sendtdato")]
+  sent-date(get("sendtdato"))
 }
 
 #title[Snart slutt på sykepenger]
@@ -35,11 +20,7 @@
 #if is-truthy(get("maxdato")) and is-truthy(get("utbetaltTom")) {
   paragraph[Per #get("utbetaltTom") er din siste dag med sykepenger beregnet til å være #strong(get("maxdato")).]
 } else {
-  framed(
-    inset: (left: 12pt, top: 21.5pt, bottom: 19pt),
-    above: 22.5pt,
-    below: 25.5pt,
-  )[
+  framed(inset: (left: 12pt, top: 21.5pt, bottom: 19pt), above: 22.5pt, below: 25.5pt)[
     #section-title[Beklager, teknisk feil]
     #paragraph[
       På grunn av feil i systemene våre får vi ikke vist deg beregnet siste dag med sykepenger. \
@@ -79,11 +60,7 @@
 
 #separator()
 
-#framed(
-  radius: 6pt,
-  inset: (x: 18pt, top: 21.5pt, bottom: 27pt),
-  above: 19pt,
-)[
+#framed(radius: 6pt, inset: (x: 18pt, top: 21.5pt, bottom: 27pt), above: 19pt)[
   #section-title[Trenger du oppfølging fra oss?]
   #paragraph[Vi kan gi informasjon og veiledning om du har rett til andre økonomiske støtteordninger etter at sykepengene tar slutt]
   #paragraph[#choice[Ja, jeg trenger oppfølging] #h(12pt) #choice[Nei, jeg trenger ikke oppfølging]]
