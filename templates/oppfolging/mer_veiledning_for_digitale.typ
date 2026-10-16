@@ -1,7 +1,8 @@
+#import "/lib/common/sanitize.typ": sanitize
 #import "/lib/oppfolgingsplan/layout.typ": decorative-image, is-truthy
 #import "/lib/oppfolging/mer-veiledning.typ": framed, letter-color, letter-layout, paragraph, section-title, sent-date, separator, title
 
-#let data = json("/data/oppfolging/mer_veiledning_for_digitale.json")
+#let data = sanitize(json("/data/oppfolging/mer_veiledning_for_digitale.json"))
 #let letter = data.at("brevdata", default: (:))
 #let get(key) = letter.at(key, default: none)
 

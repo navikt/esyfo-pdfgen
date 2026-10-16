@@ -1,6 +1,7 @@
+#import "/lib/common/sanitize.typ": sanitize
 #import "/lib/oppfolgingsplan/layout.typ": answer, document-layout, is-truthy, keep-together, question, section-title, separator, text-line, title
 
-#let data = json("/data/oppfolging/oppfolgingsplanlps.json")
+#let data = sanitize(json("/data/oppfolging/oppfolgingsplanlps.json"))
 #let plan = data.at("lpsPlanData", default: (:))
 #let get(key) = plan.at(key, default: none)
 
