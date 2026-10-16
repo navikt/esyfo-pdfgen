@@ -5,6 +5,9 @@
 
 #let is-present(value) = value != none and value != ""
 
+// Handlebars `{{#if}}` semantics.
+#let is-truthy(value) = value not in (none, false, "", 0, ())
+
 #let multiline(value) = {
   for (index, line) in value.split("\n").enumerate() {
     if index > 0 {
@@ -14,67 +17,129 @@
   }
 }
 
-#let document-layout(title: "", footer-title: title, body) = {
+// Components carry no spacing of their own: templates set `above`/`below`
+// (and gaps inside components), typically once with `.with()`.
+
+// Page and text defaults. `footer-title` adds a footer with page numbers.
+#let document-layout(
+  title: "",
+  footer-title: none,
+  text-size: 12pt,
+  text-fill: text-color,
+  leading: 6pt,
+  paragraph-spacing: 1.2em,
+  margin: 48pt,
+  body,
+) = {
   set document(title: title)
   set page(
     paper: "a4",
-    margin: (top: 48pt, bottom: 48pt, left: 48pt, right: 48pt),
-    footer: context [
-      #set text(size: 9pt)
-      #grid(
-        columns: (1fr, auto),
-        column-gutter: 12pt,
-        footer-title,
-        [side #counter(page).display() av #counter(page).final().first()],
-      )
-    ],
+    margin: margin,
+    footer: if footer-title != none {
+      context [
+        #set text(size: 9pt)
+        #grid(
+          columns: (1fr, auto),
+          column-gutter: 12pt,
+          footer-title,
+          [side #counter(page).display() av #counter(page).final().first()],
+        )
+      ]
+    },
   )
   set text(
     font: ("Source Sans 3", "Noto Color Emoji"),
     lang: "nb",
-    size: 9pt,
-    fill: text-color,
+    size: text-size,
+    fill: text-fill,
     fallback: false,
   )
-  set par(leading: 6pt)
+  set par(leading: leading, spacing: paragraph-spacing)
 
   body
 }
 
-#let title-banner(body) = block(
+#let styled-heading(level, size, weight, body) = {
+  show heading: set text(size: size, weight: weight)
+  show heading: set block(above: 0pt, below: 0pt)
+  heading(level: level, bookmarked: false, body)
+}
+
+// Document title, optionally on a coloured banner.
+#let title(body, size: 18pt, weight: "bold", background: none, inset: 0pt, above: 0pt, below: 0pt) = block(
   width: 100%,
-  fill: title-background,
-  inset: (x: 10pt, y: 10pt),
+  fill: background,
+  inset: inset,
   breakable: false,
-  text(size: 18pt, weight: "bold", body),
+  above: above,
+  below: below,
+  styled-heading(1, size, weight, body),
 )
 
-#let detail-row(label, value) = block(above: 14pt)[
-  #strong(label): #multiline(value)
-]
-
-#let section-header(title, description: none) = block(
-  above: 37.5pt,
-  below: 7.5pt,
+#let section-title(body, description: none, description-gap: 0pt, size: 15pt, weight: "bold", above: 0pt, below: 0pt) = block(
+  above: above,
+  below: below,
   breakable: false,
 )[
-  #text(size: 15pt, weight: "bold")[#title]
+  #styled-heading(2, size, weight, body)
   #if is-present(description) {
-    v(7.5pt)
+    v(description-gap)
     description
   }
 ]
 
-#let answer-field(title, description: none, value) = block(above: 7.5pt)[
-  #block(breakable: false)[
-    #line(length: 100%, stroke: 0.75pt + separator-color)
-    #v(7.5pt)
-    #text(size: 10.5pt, weight: "bold")[#title]
-    #if is-present(description) {
-      v(7.5pt)
-      strong(description)
-    }
-  ]
-  #v(7.5pt)
-  #multiline(value)
+#let question(body, description: none, description-gap: 0pt, size: 10.5pt, weight: "bold", above: 0pt, below: 0pt) = block(
+  above: above,
+  below: below,
+  breakable: false,
+)[
+  #styled-heading(3, size, weight, body)
+  #if is-present(description) {
+    v(description-gap)
+    strong(description)
+  }
 ]
+
+// Renders nothing when the value is empty.
+#let answer(value, size: auto, above: 0pt, below: 0pt) = if value != none and is-present(str(value)) {
+  let content = multiline(str(value))
+  block(above: above, below: below, if size == auto { content } else { text(size: size, content) })
+}
+
+#let separator(above: 0pt, below: 0pt) = block(
+  above: above,
+  below: below,
+  line(length: 100%, stroke: 0.75pt + separator-color),
+)
+
+#let detail-row(label, value, above: 0pt, below: 0pt) = block(above: above, below: below)[
+  #strong(label): #multiline(value)
+]
+
+#let text-line(value, above: 0pt, below: 0pt) = block(above: above, below: below, multiline(str(value)))
+
+// Keeps its content on one page.
+#let keep-together(above: 0pt, below: 0pt, body) = block(
+  above: above,
+  below: below,
+  breakable: false,
+  width: 100%,
+  body,
+)
+
+#let paragraph(body, above: 0pt, below: 0pt) = block(above: above, below: below, body)
+
+// Bordered box, e.g. a notice or a highlighted call to action.
+#let framed(body, stroke: 1pt, radius: 0pt, inset: 0pt, breakable: true, above: 0pt, below: 0pt) = block(
+  width: 100%,
+  breakable: breakable,
+  stroke: stroke,
+  radius: radius,
+  inset: inset,
+  above: above,
+  below: below,
+  body,
+)
+
+// Image without meaning, hidden from assistive technology.
+#let decorative-image(path, height: 1em) = box(pdf.artifact(image(path, height: height)))
