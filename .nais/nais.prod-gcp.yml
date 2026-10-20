@@ -5,6 +5,8 @@ spec:
     inbound:
       rules:
         - application: syfo-oppfolgingsplan-backend
+        - application: meroppfolging-backend
+        - application: lps-oppfolgingsplan-mottak
   replicas:
     min: 2
     max: 3
