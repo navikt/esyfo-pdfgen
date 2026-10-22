@@ -1,0 +1,16 @@
+{
+  "brevdata": {
+    "behovForOppfolging": true,
+    "questionTextFremtidigSituasjon": "Hvilken situasjon tror du at du er i når sykepengene har tatt slutt?",
+    "answerTextFremtidigSituasjon": "Jeg er frisk og tilbake hos arbeidsgiver",
+    "questionTextBehovForOppfolging": "Ønsker du å be om oppfølging?",
+    "answerTextBehovForOppfolging": "Ja, jeg ønsker å be om oppfølging",
+    "submissionDateISO": "2023-04-05T12:00:00",
+    "maxdatoISO": "2023-07-14",
+    "utbetaltTomISO": "2023-03-31",
+    "submissionDateFormatted": "5. april 2023",
+    "maxdatoFormatted": "14. juli 2023",
+    "utbetaltTomFormatted": "31. mars 2023",
+    "daysUntilMaxDate": "100"
+  }
+}

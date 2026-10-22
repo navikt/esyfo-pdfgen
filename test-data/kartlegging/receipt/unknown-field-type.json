@@ -1,0 +1,9 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {"fieldType": "UNKNOWN", "fieldId": "ukjentFelt", "label": "Bare etiketten skal vises", "description": "Skal ikke vises", "value": "Skal ikke vises", "options": [{"optionId": "ukjent", "optionLabel": "Skal ikke vises", "wasSelected": true}]},
+      {"fieldType": "TEXT", "fieldId": "mulighetForTilbakeTilJobbenUtfordrendeBegrunnelse", "label": "Et spørsmål etter skilletegnet", "value": "Syntetisk svar"}
+    ]
+  }
+}

@@ -42,7 +42,7 @@ Testen bruker port 8080; sett `PORT` hvis den er opptatt.
 | Katalog | Innhold |
 | --- | --- |
 | `templates/` | Typst-maler organisert som `<område>/<dokument>.typ` |
-| `lib/` | Gjenbrukbare Typst-komponenter for layout |
+| `lib/` | Gjenbrukbare Typst-komponenter. `lib/common/` er domeneuavhengig og importerer aldri fra `lib/<område>/` |
 | `resources/` | Bilder og andre filer som malene bruker |
 | `data/` | Syntetiske eller anonymiserte eksempeldata for lokal utvikling |
 | `test-data/` | Syntetiske regresjonsdata organisert som `<område>/<dokument>/<tilfelle>.json` |

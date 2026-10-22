@@ -1,0 +1,8 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {"fieldType": "TEXT", "fieldId": "tilbakeTilJobbenUsikkerBegrunnelse", "label": "Utdyp svaret ditt", "value": "Et syntetisk svar.\nMed en ny linje og <tekst> som ikke skal tolkes som kode."}
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {
+        "fieldType": "RADIO_GROUP",
+        "fieldId": "naarTilbakeHvorforMerEnnSeksManederFlervalg",
+        "label": "Et ubesvart spørsmål",
+        "options": [
+          {"optionId": "behandling", "optionLabel": "Første alternativ", "wasSelected": false},
+          {"optionId": "manglende_tilpasning", "optionLabel": "Andre alternativ", "wasSelected": "false"},
+          {"optionId": "andre_forhold", "optionLabel": "Tredje alternativ", "wasSelected": null}
+        ]
+      },
+      {
+        "fieldType": "RADIO_GROUP",
+        "fieldId": "naarTilbakeTilJobbenFlervalg",
+        "label": "Et ubesvart spørsmål uten wasSelected",
+        "options": [
+          {"optionId": "3a", "optionLabel": "Fjerde alternativ"},
+          {"optionId": "3b", "optionLabel": "Femte alternativ", "wasSelected": false}
+        ]
+      }
+    ]
+  }
+}
