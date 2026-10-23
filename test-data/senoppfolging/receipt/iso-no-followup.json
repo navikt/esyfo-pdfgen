@@ -1,0 +1,15 @@
+{
+  "brevdata": {
+    "behovForOppfolging": false,
+    "questionTextFremtidigSituasjon": "Hvilken situasjon tror du at du er i når sykepengene har tatt slutt?",
+    "answerTextFremtidigSituasjon": "Ingen av alternativene passer",
+    "questionTextBehovForOppfolging": "Ønsker du å be om oppfølging?",
+    "answerTextBehovForOppfolging": "Nei, jeg trenger ikke oppfølging nå",
+    "submissionDateFormatted": "",
+    "submissionDateISO": "2023-04-05T00:30:00+02:00",
+    "maxdatoFormatted": "",
+    "maxdatoISO": "2024-02-29",
+    "utbetaltTomFormatted": "",
+    "utbetaltTomISO": "2023-03-31T23:30:00Z"
+  }
+}

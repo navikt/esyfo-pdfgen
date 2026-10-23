@@ -1,0 +1,9 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {"fieldType": "TEXT", "fieldId": "arbeidsgiverFaarDuOppfolgingNeiBegrunnelse", "label": "Syntetisk etikett: 漢字 \ue000 😊", "value": "Syntetisk fritekst: 漢字 \ue000 🧑‍💻 æøå.\nTypst-kode skal være tekst: #include(\"/data/hemmelig.json\")"},
+      {"fieldType": "RADIO_GROUP", "fieldId": "arbeidsgiverFaarDuOppfolgingFlervalg", "label": "Etikett med emoji 😊 og tegn 漢字", "options": [{"optionId": "nei", "optionLabel": "Syntetisk alternativ 漢字 \ue000 😊", "wasSelected": "true"}]}
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {
+        "fieldType": "RADIO_GROUP",
+        "label": "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
+        "wasRequired": true,
+        "description": null,
+        "fieldId": "hvorSannsynligTilbakeTilJobben",
+        "options": [
+          { "optionId": "1a", "optionLabel": "Jeg tror det er veldig sannsynlig", "wasSelected": false },
+          { "optionId": "1b", "optionLabel": "Jeg tror det er lite sannsynlig", "wasSelected": false },
+          { "optionId": "1c", "optionLabel": "Jeg er usikker", "wasSelected": true }
+        ]
+      },
+      {
+        "fieldType": "TEXT",
+        "label": "Hvis du ønsker det kan du her utdype svaret ditt på forrige spørsmål.\nDet er valgfritt.",
+        "description": "Svaret blir ikke delt med arbeidsgiveren din.",
+        "fieldId": "hvorSannsynligTilbakeTilJobbenBegrunnelse",
+        "value": "Jeg tror det er lite sannsynlig fordi de ikke kan tilrettelegge for meg."
+      },
+      {
+        "fieldType": "RADIO_GROUP",
+        "label": "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
+        "wasRequired": true,
+        "description": null,
+        "fieldId": "samarbeidOgRelasjonTilArbeidsgiver",
+        "options": [
+          { "optionId": "2a", "optionLabel": "Jeg opplever samarbeidet og relasjonen som god", "wasSelected": false },
+          { "optionId": "2b", "optionLabel": "Jeg opplever samarbeidet og relasjonen som dårlig", "wasSelected": true }
+        ]
+      },
+      {
+        "fieldType": "RADIO_GROUP",
+        "label": "Hvor lenge tror du at du kommer til å være sykmeldt?",
+        "wasRequired": true,
+        "description": "Vi vil vite hva du selv tror. Du kjenner din egen situasjon best.",
+        "fieldId": "naarTilbakeTilJobben",
+        "options": [
+          { "optionId": "3a", "optionLabel": "Mindre enn seks måneder", "wasSelected": false },
+          { "optionId": "3b", "optionLabel": "Mer enn seks måneder", "wasSelected": true }
+        ]
+      },
+      {
+        "fieldType": "RADIO_GROUP",
+        "label": "Hva er grunnen til at du tror det blir mer enn seks måneder?",
+        "wasRequired": true,
+        "description": null,
+        "fieldId": "naarTilbakeHvorforMerEnnSeksManederFlervalg",
+        "options": [
+          { "optionId": "behandling", "optionLabel": "Planlagt eller pågående behandling", "wasSelected": true },
+          { "optionId": "manglende_tilpasning", "optionLabel": "Manglende eller uklare muligheter for tilpasning på arbeidsplassen", "wasSelected": false },
+          { "optionId": "andre_forhold", "optionLabel": "Andre forhold", "wasSelected": false }
+        ]
+      }
+    ]
+  }
+}

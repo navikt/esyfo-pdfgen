@@ -1,0 +1,25 @@
+{
+  "brevdata": {
+    "createdAt": "01.09.2025",
+    "fieldSnapshots": [
+      {
+        "fieldType": "RADIO_GROUP",
+        "fieldId": "arbeidsgiverFaarDuOppfolgingFlervalg",
+        "label": "Syntetisk kontroll av sammenligning",
+        "options": [
+          {"optionId": "ja", "optionLabel": "Boolsk true", "wasSelected": true},
+          {"optionId": "nei", "optionLabel": "Store bokstaver er ikke valgt", "wasSelected": "TRUE"}
+        ]
+      },
+      {
+        "fieldType": "RADIO_GROUP",
+        "fieldId": "mulighetForTilbakeTilJobbenFlervalg",
+        "label": "Syntetisk kontroll av sammenligning med streng og tall",
+        "options": [
+          {"optionId": "kommer_tilbake", "optionLabel": "Tallet en er ikke valgt", "wasSelected": 1},
+          {"optionId": "utfordrende", "optionLabel": "Strengen true", "wasSelected": "true"}
+        ]
+      }
+    ]
+  }
+}

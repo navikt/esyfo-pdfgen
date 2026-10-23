@@ -7,6 +7,8 @@ spec:
         - application: syfo-oppfolgingsplan-backend
         - application: meroppfolging-backend
         - application: lps-oppfolgingsplan-mottak
+        - application: ismeroppfolging
+          namespace: teamsykefravr
   replicas:
     min: 2
     max: 3
