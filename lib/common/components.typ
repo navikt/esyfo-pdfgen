@@ -51,7 +51,7 @@
     radius: radius, inset: inset, stroke: stroke, above: above, below: below,
   )[
     #if icon {
-      grid(columns: (18pt, 1fr), gutter: 6pt,
+      grid(columns: (18pt, 1fr), gutter: 6pt, align: horizon,
         if decorative-icon {
           base.decorative-image("/resources/info-icon.svg", height: 18pt)
         } else {
