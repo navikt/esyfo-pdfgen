@@ -36,7 +36,7 @@
         "fieldType": "RADIO_GROUP",
         "label": "Hvor lenge tror du at du kommer til å være sykmeldt?",
         "wasRequired": true,
-        "description": "Vi vil vite hva du selv tror. Du kjenner din egen situasjon best.",
+        "description": "Vi vil vite hva du selv tenker. Ta utgangspunkt fra dagen du ble sykmeldt og frem til du tror du er helt tilbake i jobb.",
         "fieldId": "naarTilbakeTilJobben",
         "options": [
           { "optionId": "3a", "optionLabel": "Mindre enn seks måneder", "wasSelected": false },
