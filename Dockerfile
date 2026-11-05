@@ -1,4 +1,4 @@
-FROM ghcr.io/navikt/pdfgenrs:1.0.50@sha256:ec0e94a203aaa5c4176b1ecb643f0415b2e3b3fdcd3d4bb6111ba400692c2c89 AS production
+FROM ghcr.io/navikt/pdfgenrs:1.0.51@sha256:0ac12896cc0d9cf7e63e0350270f713aa9c0da268a89d407560deb3838fe92d4 AS production
 
 COPY templates /app/templates
 COPY lib /app/lib
