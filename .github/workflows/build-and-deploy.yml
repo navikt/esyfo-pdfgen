@@ -26,12 +26,7 @@ jobs:
 
   build:
     name: Build
-    if: >-
-      ${{
-        github.event_name == 'pull_request' ||
-        github.event_name == 'merge_group' ||
-        github.event_name == 'push'
-      }}
+    if: ${{ github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -58,11 +53,7 @@ jobs:
 
   deploy-dev:
     name: Deploy to dev
-    if: >-
-      ${{
-        github.event_name == 'pull_request' ||
-        github.event_name == 'push'
-      }}
+    if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' }}
     needs: [build, test-templates]
     runs-on: ubuntu-latest
     concurrency:
@@ -86,7 +77,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to prod
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [build, test-templates]
     runs-on: ubuntu-latest
     concurrency:
@@ -108,67 +99,13 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image }}
         run: nais apply .nais/nais.yml --environment prod-gcp --set spec.image="$IMAGE" --wait
 
-  build-demo:
-    name: Build demo
-    if: ${{ github.event_name == 'push' }}
+  demo:
+    name: Demo
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: test-templates
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/deploy-demo.yml
     permissions:
       contents: read
       id-token: write
       packages: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7.0.1
-      - name: Build and push demo image
-        id: docker-build-push
-        uses: nais/docker-build-push@d3a1f7e259ecc381a50435e1d4add9059429ebd7 # v0
-        with:
-          team: team-esyfo
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: demo
-          target: development
-      - name: Build and push demo web image
-        id: docker-build-push-web
-        uses: nais/docker-build-push@d3a1f7e259ecc381a50435e1d4add9059429ebd7 # v0
-        with:
-          team: team-esyfo
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          dockerfile: demo/Dockerfile
-          docker_context: .
-          image_suffix: demo-web
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-      web_image: ${{ steps.docker-build-push-web.outputs.image }}
-
-  deploy-demo:
-    name: Deploy to demo
-    if: ${{ github.event_name == 'push' }}
-    needs: [build-demo]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: deploy-demo-gcp
-      cancel-in-progress: true
-    permissions:
-      contents: read
-      id-token: write
-    environment:
-      name: demo
-      url: https://esyfo-pdfgen-demo.ekstern.dev.nav.no
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7.0.1
-      - name: Set up Nais CLI
-        uses: nais/setup@fb8692f65df9c904e2cdac5d395630ac876abdcf # v1.0.3
-        with:
-          team: team-esyfo
-      - name: Deploy demo pdfgen to dev-gcp
-        env:
-          IMAGE: ${{ needs.build-demo.outputs.image }}
-        run: nais apply .nais/nais.yml --environment dev-gcp --mixin .nais/demo/pdfgen.yml --set spec.image="$IMAGE" --wait
-      - name: Deploy demo web to dev-gcp
-        env:
-          IMAGE: ${{ needs.build-demo.outputs.web_image }}
-        run: nais apply .nais/demo/web.yml --environment dev-gcp --set spec.image="$IMAGE" --wait
+    secrets: inherit
