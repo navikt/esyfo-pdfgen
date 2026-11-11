@@ -107,3 +107,6 @@ går via proxyen og krever samme innlogging. `pdfgenrs`-demoen kjører med versj
 eksempeldata, men har ikke lenger egen ingress og aksepterer bare trafikk fra
 `esyfo-pdfgen-demo-web`. Forsiden finnes kun i demo og lokalt, ikke i dev
 eller prod.
+
+Demosiden bruker Chainguards `:latest`-images. Nye baseimages tas i bruk ved
+neste deploy, men utløser ikke deploy alene.
