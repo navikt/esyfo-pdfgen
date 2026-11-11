@@ -13,7 +13,9 @@ updates:
           - '*'
 
   - package-ecosystem: docker
-    directory: "/"
+    directories:
+      - "/"
+      - "/demo"
     schedule:
       interval: daily
     cooldown:
